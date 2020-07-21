@@ -126,6 +126,8 @@ var board = {
 // board.cells[i].surroundingMines this will create/add this key and its resulting value
 // after we need to define the function countSurroundingMines
 
+
+
 // Would like to talk through the below 3 lines of code
 function startGame () {
   for (let i = 0; i < board.cells.length; i++) {
@@ -135,6 +137,12 @@ function startGame () {
   
   // Don't remove this function call: it makes the game work!
   lib.initBoard()
+
+
+  // eventListener below.  checkForWin every L click="click"
+  // also add checkForWin ever R click="contextmenu"
+  document.addEventListener("click", checkForWin);
+  document.addEventListener("contextmenu", checkForWin);
 }
 
 
@@ -143,12 +151,37 @@ function startGame () {
 //
 // 1. Are all of the cells that are NOT mines visible?
 // 2. Are all of the mines marked?
+
+
+// create a function checkForWin (from addEventListener s above)
+//define a varriable win as boolean true
+// for loop it through every cell (from above)
+// if win = true return lib.displayMessage (do first, easiest code)
+// if win = false exit out of function (?)
+// if the conditions of .isMine and .isMarked are true
+// should the below be a for-if-else loop?
+// the game works but this line in the directions confused me...
+//""For each cell, check to see if both .isMine and .isMarked are true. 
+//If any mine still exists that isn't marked, the player hasn't won yet and you can return to exit out of the function.""
+
+
 function checkForWin () {
-  
+  var win = true;
+  for (let i = 0; i < board.cells.length; i++) {
+    if (board.cells[i].isMine === true && board.cells[i].isMarked === false) {
+    win = false; }
+    if (board.cells[i].isMine === false && board.cells[i].isMarked === true) {
+    win = false; }
+  }
+
   // You can use this function call to declare a winner (once you've
   // detected that they've won, that is!)
-  lib.displayMessage('You win!')
+
+  if(win == true) {
+    lib.displayMessage('You win!')
+  }
 }
+
 
 
 
@@ -174,10 +207,9 @@ function countSurroundingMines (cell) {
   var surrounding = lib.getSurroundingCells(cell.row, cell.col)
   var count = 0;
   for (let i = 0; i < surrounding.length; i++){
-    if (surrounding[i].isMine == true){
+    if (surrounding[i].isMine === true){
     count++;
     }
   }
   return count;  
 }
-
